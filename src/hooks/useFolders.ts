@@ -126,8 +126,7 @@ const useFolder = (
 
     const handleDrop = (itemId: string, targetId: string) => {
         const parents = getParents(targetId);
-        console.log(itemId, targetId, parents);
-        
+
         if(parents.find(parent => parent.id === itemId) || itemId === targetId) {
             console.error("Can not net item in it self!");
             return;
@@ -152,19 +151,14 @@ const useFolder = (
             const copy = prev.slice();
             copy[itemIndex].parent = targetId;
             return copy;
-        })
-console.log(activeItems, itemId);
+        });
 
         if(activeItems.includes(itemId)) {
             const parentDepth = activeItems.indexOf(itemId)-1;
             const parentId = activeItems[parentDepth];
-            console.log(parentDepth, parentId);
-            
             selectItem(parentDepth, parentId);
         }
-    }
-console.log(activeItems);
-    
+    }    
 
     return {
         activeItems,
