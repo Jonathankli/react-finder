@@ -31,7 +31,7 @@ export enum DROP_ON_ITEM_OPTIONS {
 interface FinderProps {
     tree: FinderItem[];
     setTree: React.Dispatch<React.SetStateAction<FinderItem[]>>;
-    dropOnFileAction?: DROP_ON_ITEM_OPTIONS;
+    dropOnFile?: DROP_ON_ITEM_OPTIONS;
     Item?: any;
     ItemDetail?: any;
 }
@@ -40,7 +40,7 @@ const Finder = (props: FinderProps) => {
     const {
         tree,
         setTree,
-        dropOnFileAction = DROP_ON_ITEM_OPTIONS.FORBID,
+        dropOnFile = DROP_ON_ITEM_OPTIONS.CREATE_FOLDER,
         Item = FinderItemDefault,
         ItemDetail = FinderDetail,
     } = props;
@@ -53,7 +53,7 @@ const Finder = (props: FinderProps) => {
         deselectItem,
         hasChildren,
         handleDrop,
-    } = useFolder(tree, setTree, contentRef);
+    } = useFolder(tree, setTree, contentRef, dropOnFile);
 
     return (
         <DndProvider backend={HTML5Backend}>

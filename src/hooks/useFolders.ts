@@ -1,16 +1,25 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { v4 } from "uuid";
-import { FinderFolderType, FinderItem } from "../components/Finder/Finder";
+import { DROP_ON_ITEM_OPTIONS, FinderFolderType, FinderItem } from "../components/Finder/Finder";
 
 export enum SELECT_TYPE {
     DETAILS,
     CHILDREN,
 }
 
+export type FolderFactory = (item: FinderItem, targetItem: FinderItem) => FinderItem;
+
+const defaultFolderFactory: FolderFactory = () => ({
+    id: v4(),
+    name: "Neuer Ordner"
+})
+
 const useFolder = (
     tree: FinderItem[],
     setTree: React.Dispatch<React.SetStateAction<FinderItem[]>>,
-    contentRef: React.MutableRefObject<HTMLInputElement>
+    contentRef: React.MutableRefObject<HTMLInputElement>,
+    dropOnFile: DROP_ON_ITEM_OPTIONS,
+    folderFactory: FolderFactory = defaultFolderFactory
 ) => {
     const [activeItems, setActiveItems] = useState<string[]>([]);
     const [detailView, setDetailView] = useState<SELECT_TYPE>(
@@ -103,7 +112,6 @@ const useFolder = (
         });
     };
 
-
     const getParents = (itemId: string, first = true): FinderItem[] => {
         if(itemId === "root") {
             return [];
@@ -144,13 +152,34 @@ const useFolder = (
                 return copy;
             }
 
-            if(!prev.find(item => item.id === targetId)) {
+            const parentIndex = prev.findIndex(item => item.id === targetId);
+            if(parentIndex === -1) {
                 throw new Error("Target not found!");
             }
+            const isFolder = hasChildren(targetId);
+            
+            if(isFolder || dropOnFile === DROP_ON_ITEM_OPTIONS.DIRECT_CHILD) {
+                const copy = prev.slice();
+                copy[itemIndex].parent = targetId;
+                return copy;
+            }
 
-            const copy = prev.slice();
-            copy[itemIndex].parent = targetId;
-            return copy;
+            if(dropOnFile === DROP_ON_ITEM_OPTIONS.FORBID) {
+                return prev;
+            }
+            if(dropOnFile === DROP_ON_ITEM_OPTIONS.CREATE_FOLDER) {
+                const _parent = folderFactory(prev[itemIndex], prev[parentIndex]);
+                const copy = prev.slice();
+                copy.push(_parent);
+                copy[itemIndex].parent = _parent.id;
+                copy[parentIndex].parent = _parent.id;
+                console.log(copy);
+                
+                return copy;
+            }
+
+            return prev;
+
         });
 
         if(activeItems.includes(itemId)) {
