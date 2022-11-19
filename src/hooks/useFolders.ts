@@ -9,9 +9,10 @@ export enum SELECT_TYPE {
 
 export type FolderFactory = (item: FinderItem, targetItem: FinderItem) => FinderItem;
 
-const defaultFolderFactory: FolderFactory = () => ({
+const defaultFolderFactory: FolderFactory = (item, targetItem) => ({
     id: v4(),
-    name: "Neuer Ordner"
+    name: "Neuer Ordner",
+    parent: targetItem.parent
 })
 
 const useFolder = (
