@@ -28,7 +28,7 @@ const FinderFolder = (props: FinderFolderProps) => {
     const [{isOver}, dropRef] = useDrop(() => ({
         accept: "Item",
         drop: (data: {id: string}, monitor) => {
-            console.log("Dorp");
+            if(monitor.didDrop()) return;
             handleDrop(data.id, folder.id);
         },
         collect: (monitor) => ({
@@ -49,7 +49,7 @@ const FinderFolder = (props: FinderFolderProps) => {
             <ul>
                 {folder.items.map(item => (
                     <li key={item.id}>
-                        <FinderItemDrag itemId={item.id}>
+                        <FinderItemDrag itemId={item.id} handleDrop={handleDrop}>
                             <Item
                                 item={item}
                                 hasChildren={hasChildren(item.id)}
