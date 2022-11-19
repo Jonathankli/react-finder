@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "./styles.css";
 import { ConnectableElement, useDrag, useDrop } from "react-dnd";
 
 export interface FinderItemDragProps {
     itemId: string;
     children: any;
+    hasChildren: boolean;
+    open(): void
     handleDrop(itemId: string, targetId: string): void;
 }
 
 const FinderItemDrag = (props: FinderItemDragProps) => {
-    const { itemId, handleDrop } = props;
+    const { itemId, handleDrop, hasChildren, open } = props;
+
+    const refTimer = useRef<NodeJS.Timer | null>(null);
 
     const [{isDragging}, dragRef] = useDrag(() => ({
         type: "Item",
@@ -25,9 +29,23 @@ const FinderItemDrag = (props: FinderItemDragProps) => {
             handleDrop(data.id, itemId);
         },
         collect: (monitor) => ({
-            isOver: monitor.isOver()
+            isOver: monitor.isOver(),
         })
     }), [handleDrop])
+
+    useEffect(() => {
+        if(refTimer.current || (refTimer.current && !isOver)) {
+            clearTimeout(refTimer.current);
+        }
+        if(!hasChildren || !isOver) {
+            return;
+        }
+        
+        refTimer.current = setTimeout(() => {
+            console.log("OPEN");            
+            open();
+        }, 1000)
+    }, [isOver])
 
     const attachRef = (el: ConnectableElement) => {
         dropRef(el)

@@ -1,55 +1,56 @@
-import React from 'react';
-import { useDrop } from 'react-dnd';
-import { FinderFolderType } from '../Finder/Finder';
-import FinderItemDrag from '../FinderItemDrag/FinderItemDrag';
-import './styles.css';
+import React from "react";
+import { useDrop } from "react-dnd";
+import { FinderFolderType } from "../Finder/Finder";
+import FinderItemDrag from "../FinderItemDrag/FinderItemDrag";
+import "./styles.css";
 
 export interface FinderFolderProps {
-    depth: number
-    folder: FinderFolderType
+    depth: number;
+    folder: FinderFolderType;
     Item: any;
-    selectItem(id: string): void
-    deselectItem(): void
-    hasChildren(id: string): boolean
-    handleDrop(itemId: string, targetId: string): void
+    selectItem(id: string): void;
+    deselectItem(): void;
+    hasChildren(id: string): boolean;
+    handleDrop(itemId: string, targetId: string): void;
 }
 
 const FinderFolder = (props: FinderFolderProps) => {
+    const { folder, Item, selectItem, deselectItem, hasChildren, handleDrop } =
+        props;
 
-    const {
-        folder,
-        Item,
-        selectItem,
-        deselectItem,
-        hasChildren,
-        handleDrop,
-    } = props;
-
-    const [{isOver}, dropRef] = useDrop(() => ({
-        accept: "Item",
-        drop: (data: {id: string}, monitor) => {
-            if(monitor.didDrop()) return;
-            handleDrop(data.id, folder.id);
-        },
-        collect: (monitor) => ({
-            isOver: monitor.isOver({ shallow: false })
-        })
-    }), [handleDrop])
+    const [{ isOver }, dropRef] = useDrop(
+        () => ({
+            accept: "Item",
+            drop: (data: { id: string }, monitor) => {
+                if (monitor.didDrop()) return;
+                handleDrop(data.id, folder.id);
+            },
+            collect: (monitor) => ({
+                isOver: monitor.isOver({ shallow: false }),
+            }),
+        }),
+        [handleDrop]
+    );
 
     const handleItemClick = (id: string) => {
-        if(folder.activeItem === id) {
+        if (folder.activeItem === id) {
             deselectItem();
             return;
         }
         selectItem(id);
-    }
+    };
 
-    return ( 
-        <div className='finder-folder' ref={dropRef}>
+    return (
+        <div className="finder-folder" ref={dropRef}>
             <ul>
-                {folder.items.map(item => (
+                {folder.items.map((item) => (
                     <li key={item.id}>
-                        <FinderItemDrag itemId={item.id} handleDrop={handleDrop}>
+                        <FinderItemDrag
+                            itemId={item.id}
+                            handleDrop={handleDrop}
+                            open={handleItemClick.bind(this, item.id)}
+                            hasChildren={hasChildren(item.id)}
+                        >
                             <Item
                                 item={item}
                                 hasChildren={hasChildren(item.id)}
@@ -62,6 +63,6 @@ const FinderFolder = (props: FinderFolderProps) => {
             </ul>
         </div>
     );
-}
- 
+};
+
 export default FinderFolder;
