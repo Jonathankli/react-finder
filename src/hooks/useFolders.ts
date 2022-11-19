@@ -50,13 +50,15 @@ const useFolder = (
         if (id && (!hasChildren(id) || detailView === SELECT_TYPE.DETAILS)) {
             const item = tree.find((item) => item.id === id);
             if (!item) return null;
-            contentRef.current.scrollTo({
-                top: 0,
-                left:
-                    contentRef.current.scrollWidth -
-                    contentRef.current.offsetWidth,
-                behavior: "smooth",
-            });
+            setTimeout(() => {
+                contentRef.current.scrollTo({
+                    top: 0,
+                    left:
+                        contentRef.current.scrollWidth -
+                        contentRef.current.offsetWidth,
+                    behavior: "smooth",
+                });
+            }, 10);
             return item;
         }
         return null;
