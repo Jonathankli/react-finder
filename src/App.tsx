@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Finder, { FinderItem } from './components/Finder/Finder';
 
-const tree: FinderItem[] = [
+const initTree: FinderItem[] = [
   {
     id: "item1",
     name: "Item 1",
@@ -36,9 +36,12 @@ const tree: FinderItem[] = [
 ]
 
 function App() {
+
+  const [tree, setTree] = useState(initTree);
+
   return (
     <div className="App">
-      <Finder tree={tree}/>
+      <Finder tree={tree} setTree={setTree}/>
     </div>
   );
 }

@@ -1,9 +1,11 @@
 import React, { useRef } from "react";
+import { DndProvider } from "react-dnd";
 import useFolder from "../../hooks/useFolders";
 import FinderFolder from "../FinderFolder/FinderFolder";
 import FinderHeader from "../FinderHeader/FinderHeader";
 import { default as FinderItemDefault } from "../FinderItem/FinderItem";
 import FinderDetail from "../FinderItemDetail/FinderItemDetail";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import "./styles.css";
 
 export interface FinderItem {
@@ -28,6 +30,7 @@ export enum DROP_ON_ITEM_OPTIONS {
 
 interface FinderProps {
     tree: FinderItem[];
+    setTree: React.Dispatch<React.SetStateAction<FinderItem[]>>;
     dropOnFileAction?: DROP_ON_ITEM_OPTIONS;
     Item?: any;
     ItemDetail?: any;
@@ -36,39 +39,47 @@ interface FinderProps {
 const Finder = (props: FinderProps) => {
     const {
         tree,
+        setTree,
         dropOnFileAction = DROP_ON_ITEM_OPTIONS.FORBID,
         Item = FinderItemDefault,
         ItemDetail = FinderDetail,
     } = props;
 
     const contentRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const { folders, detailItem, selectItem, deselectItem, hasChildren } =
-        useFolder(tree, contentRef);
+    const {
+        folders,
+        detailItem,
+        selectItem,
+        deselectItem,
+        hasChildren,
+        handleDrop,
+    } = useFolder(tree, setTree, contentRef);
 
     return (
-        <div className="finder">
-            <FinderHeader />
-            <div className="finder-content" ref={contentRef}>
-                <div className="finder-folders">
-                    {folders.map((folder, depth) => (
-                        <FinderFolder
-                            key={folder.id}
-                            depth={depth}
-                            folder={folder}
-                            selectItem={selectItem.bind(this, depth)}
-                            deselectItem={deselectItem.bind(this, depth)}
-                            hasChildren={hasChildren}
-                            Item={Item}
-                        />
-                    ))}
-                </div>
-                <div className="finder-detail">
-                    {detailItem && (
-                        <ItemDetail item={ItemDetail} />
-                    )}
+        <DndProvider backend={HTML5Backend}>
+            <div className="finder">
+                <FinderHeader />
+                <div className="finder-content" ref={contentRef}>
+                    <div className="finder-folders">
+                        {folders.map((folder, depth) => (
+                            <FinderFolder
+                                key={folder.id}
+                                depth={depth}
+                                folder={folder}
+                                selectItem={selectItem.bind(this, depth)}
+                                deselectItem={deselectItem.bind(this, depth)}
+                                hasChildren={hasChildren}
+                                handleDrop={handleDrop}
+                                Item={Item}
+                            />
+                        ))}
+                    </div>
+                    <div className="finder-detail">
+                        {detailItem && <ItemDetail item={ItemDetail} />}
+                    </div>
                 </div>
             </div>
-        </div>
+        </DndProvider>
     );
 };
 
