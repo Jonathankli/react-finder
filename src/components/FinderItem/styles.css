@@ -1,0 +1,25 @@
+.finder-item {
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    cursor: pointer;
+}
+.finder-item:hover {
+    background-color: rgba(25, 113, 194, .2);;
+}
+.finder-item.isActive {
+    background-color: rgba(25, 113, 194, .5);;
+}
+.finder-item-icon {
+    padding-right: 10px;
+}
+.finder-item-title {
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+}
+.finder-item-actions {
+
+}

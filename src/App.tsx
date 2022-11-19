@@ -1,24 +1,44 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Finder, { FinderItem } from './components/Finder/Finder';
+
+const tree: FinderItem[] = [
+  {
+    id: "item1",
+    name: "Item 1",
+    parent: null,
+  },
+  {
+    id: "item2",
+    name: "Item 2",
+    parent: null,
+  },
+  {
+    id: "item3",
+    name: "Item 3",
+    parent: "item1",
+  },
+  {
+    id: "item4",
+    name: "Item 4",
+    parent: "item1",
+  },
+  {
+    id: "item5",
+    name: "Item 5",
+    parent: "item3",
+  },
+  {
+    id: "item6",
+    name: "Item 6",
+    parent: "item3",
+  },
+]
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Finder tree={tree}/>
     </div>
   );
 }
