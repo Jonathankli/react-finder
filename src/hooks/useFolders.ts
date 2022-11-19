@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { v4 } from "uuid";
 import { FinderFolderType, FinderItem } from "../components/Finder/Finder";
 
@@ -11,9 +11,9 @@ const useFolder = (tree: FinderItem[], contentRef: React.MutableRefObject<HTMLIn
     const [activeItems, setActiveItems] = useState<string[]>([]);
     const [detailView, setDetailView] = useState<SELECT_TYPE>(SELECT_TYPE.CHILDREN);
 
-    const hasChildren = (id: string): boolean => {
-        return tree.some((item) => item.parent == id);
-    };
+    const hasChildren = useCallback((id: string): boolean => {
+        return tree.some((item) => item.parent === id);
+    }, [tree]);
 
     const folders: FinderFolderType[] = useMemo(() => {
         const folder: FinderFolderType[] = activeItems.map((item, depth) => ({
@@ -42,7 +42,7 @@ const useFolder = (tree: FinderItem[], contentRef: React.MutableRefObject<HTMLIn
             return item;
         }
         return null;
-    }, [tree, activeItems]);
+    }, [tree, activeItems, detailView, contentRef, hasChildren]);
 
     const selectItem = (
         depth: number,

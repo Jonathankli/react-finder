@@ -14,7 +14,6 @@ export interface FinderFolderProps {
 const FinderFolder = (props: FinderFolderProps) => {
 
     const {
-        depth,
         folder,
         Item,
         selectItem,

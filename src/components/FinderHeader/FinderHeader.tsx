@@ -1,5 +1,5 @@
-import { IconX } from '@tabler/icons';
 import React from 'react';
+import { IconX } from '@tabler/icons';
 import './styles.css';
 
 interface FinderHeaderProps {
