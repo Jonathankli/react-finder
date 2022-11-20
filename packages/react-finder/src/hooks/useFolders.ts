@@ -1,27 +1,36 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { v4 } from "uuid";
-import { DROP_ON_ITEM_OPTIONS, FinderFolder, FinderItem } from "../types";
-
-export enum SELECT_TYPE {
-    DETAILS,
-    CHILDREN,
-}
-
-export type FolderFactory = (item: FinderItem, targetItem: FinderItem) => FinderItem;
+import {
+    DROP_ON_ITEM_OPTIONS,
+    FinderFolder,
+    FinderItem,
+    FolderFactory,
+    SELECT_TYPE,
+} from "../types";
 
 const defaultFolderFactory: FolderFactory = (item, targetItem) => ({
     id: v4(),
     name: "Neuer Ordner",
-    parent: targetItem.parent
-})
+    parent: targetItem.parent,
+});
 
-const useFolder = (
-    tree: FinderItem[],
-    setTree: React.Dispatch<React.SetStateAction<FinderItem[]>>,
-    contentRef: React.MutableRefObject<HTMLInputElement>,
-    dropOnFile: DROP_ON_ITEM_OPTIONS,
-    folderFactory: FolderFactory = defaultFolderFactory
-) => {
+export interface UseFolderArgs {
+    tree: FinderItem[];
+    setTree: React.Dispatch<React.SetStateAction<FinderItem[]>>;
+    contentRef: React.MutableRefObject<HTMLInputElement>;
+    dropOnFile: DROP_ON_ITEM_OPTIONS;
+    folderFactory?: FolderFactory;
+}
+
+const useFolder = (args: UseFolderArgs) => {
+    const {
+        tree,
+        setTree,
+        contentRef,
+        dropOnFile,
+        folderFactory = defaultFolderFactory,
+    } = args;
+
     const [activeItems, setActiveItems] = useState<string[]>([]);
     const [detailView, setDetailView] = useState<SELECT_TYPE>(
         SELECT_TYPE.CHILDREN
@@ -114,63 +123,68 @@ const useFolder = (
     };
 
     const getParents = (itemId: string, first = true): FinderItem[] => {
-        if(itemId === "root") {
+        if (itemId === "root") {
             return [];
         }
-        const item = tree.find(item => item.id === itemId);
-        if(!item) {
+        const item = tree.find((item) => item.id === itemId);
+        if (!item) {
             throw new Error("Item not found!");
         }
-        if(item.parent && first) {
+        if (item.parent && first) {
             return getParents(item.parent, false);
         }
-        if(!item.parent) {
+        if (!item.parent) {
             return [item];
         }
-        return [
-            item,
-            ...getParents(item.parent, false)
-        ]
-    }
+        return [item, ...getParents(item.parent, false)];
+    };
 
     const handleDrop = (itemId: string, targetId: string) => {
         const parents = getParents(targetId);
 
-        if(parents.find(parent => parent.id === itemId) || itemId === targetId) {
+        if (
+            parents.find((parent) => parent.id === itemId) ||
+            itemId === targetId
+        ) {
             console.error("Can not net item in it self!");
             return;
         }
-        
-        setTree(prev => {
-            const itemIndex = prev.findIndex(item => item.id === itemId);
-            if(itemIndex === -1) {
+
+        setTree((prev) => {
+            const itemIndex = prev.findIndex((item) => item.id === itemId);
+            if (itemIndex === -1) {
                 throw new Error("Item not found!");
             }
-            
-            if(targetId === "root") {
+
+            if (targetId === "root") {
                 const copy = prev.slice();
                 copy[itemIndex].parent = null;
                 return copy;
             }
 
-            const parentIndex = prev.findIndex(item => item.id === targetId);
-            if(parentIndex === -1) {
+            const parentIndex = prev.findIndex((item) => item.id === targetId);
+            if (parentIndex === -1) {
                 throw new Error("Target not found!");
             }
             const isFolder = hasChildren(targetId);
-            const _dropOnFile = prev[parentIndex].dropOnFile ? prev[parentIndex].dropOnFile : dropOnFile;
+            const _dropOnFile = prev[parentIndex].dropOnFile
+                ? prev[parentIndex].dropOnFile
+                : dropOnFile;
 
-            if(isFolder || _dropOnFile === DROP_ON_ITEM_OPTIONS.DIRECT_CHILD) {
+            if (isFolder || _dropOnFile === DROP_ON_ITEM_OPTIONS.DIRECT_CHILD) {
                 const copy = prev.slice();
                 copy[itemIndex].parent = targetId;
                 return copy;
             }
 
-            if(_dropOnFile === DROP_ON_ITEM_OPTIONS.FORBID) {
+            if (_dropOnFile === DROP_ON_ITEM_OPTIONS.FORBID) {
                 return prev;
             }
-            if(_dropOnFile === DROP_ON_ITEM_OPTIONS.CREATE_FOLDER) {
-                const _parent = folderFactory(prev[itemIndex], prev[parentIndex]);
+            if (_dropOnFile === DROP_ON_ITEM_OPTIONS.CREATE_FOLDER) {
+                const _parent = folderFactory(
+                    prev[itemIndex],
+                    prev[parentIndex]
+                );
                 const copy = prev.slice();
                 copy.push(_parent);
                 copy[itemIndex].parent = _parent.id;
@@ -179,15 +193,14 @@ const useFolder = (
             }
 
             return prev;
-
         });
 
-        if(activeItems.includes(itemId)) {
-            const parentDepth = activeItems.indexOf(itemId)-1;
+        if (activeItems.includes(itemId)) {
+            const parentDepth = activeItems.indexOf(itemId) - 1;
             const parentId = activeItems[parentDepth];
             selectItem(parentDepth, parentId);
         }
-    }    
+    };
 
     return {
         activeItems,

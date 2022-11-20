@@ -1,15 +1,7 @@
 import React from "react";
 import { IconEye, IconFile, IconFolder } from "@tabler/icons";
-import { FinderItem as FinderItemType } from "../../types";
-import { SELECT_TYPE } from "../../hooks/useFolders";
+import { FinderItemProps, SELECT_TYPE } from "../../types";
 import { Item, ItemIcon, ItemTitle } from "./styles";
-
-export interface FinderItemProps {
-    item: FinderItemType;
-    hasChildren: boolean;
-    open(type?: SELECT_TYPE): void;
-    active?: boolean;
-}
 
 const FinderItem = (props: FinderItemProps) => {
     const { item, hasChildren, open, active = false } = props;

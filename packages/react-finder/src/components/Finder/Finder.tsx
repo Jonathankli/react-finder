@@ -7,8 +7,12 @@ import { default as FinderItemDefault } from "../FinderItem/FinderItem";
 import FinderDetail from "../FinderItemDetail/FinderItemDetail";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DROP_ON_ITEM_OPTIONS, FinderItem } from "../../types";
-import { Finder as StyledFinder, FinderContent, FinderDetailContainer, FinderFolderContainer } from "./styles";
-
+import {
+    Finder as StyledFinder,
+    FinderContent,
+    FinderDetailContainer,
+    FinderFolderContainer,
+} from "./styles";
 
 interface FinderProps {
     tree: FinderItem[];
@@ -35,7 +39,7 @@ const Finder = (props: FinderProps) => {
         deselectItem,
         hasChildren,
         handleDrop,
-    } = useFolder(tree, setTree, contentRef, dropOnFile);
+    } = useFolder({ tree, setTree, contentRef, dropOnFile });
 
     return (
         <DndProvider backend={HTML5Backend}>
