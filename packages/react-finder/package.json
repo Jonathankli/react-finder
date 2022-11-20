@@ -11,11 +11,11 @@
     "@tabler/icons": "^1.112.0",
     "node-sass": "^8.0.0",
     "postcss": "^8.4.19",
+    "react": "^18.2.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "styled-components": "^5.3.6",
-    "uuid": "^9.0.0",
-    "react": "^18.2.0"
+    "uuid": "^9.0.0"
   },
   "peerDependencies": {
     "@types/react": "*",
@@ -33,14 +33,19 @@
     "@types/react-dom": "^18.0.9",
     "@types/styled-components": "^5.1.26",
     "@types/uuid": "^8.3.4",
+    "concurrently": "^7.5.0",
     "react": "^18.2.0",
+    "tsc-watch": "^5.0.3",
     "react-dom": "^18.2.0",
     "typescript": "^4.9.3"
   },
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
-    "build:cjs": "tsc --module commonjs --outDir dist/cjs"
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "watch": "concurrently \"yarn watch:esm\" \"yarn watch:cjs\"",
+    "watch:esm": "tsc-watch",
+    "watch:cjs": "tsc-watch --module commonjs --outDir dist/cjs"
   },
   "eslintConfig": {
     "extends": [

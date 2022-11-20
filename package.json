@@ -6,6 +6,7 @@
   ],
   "scripts": {
     "build": "lerna run build --scope react-finder",
+    "watch": "lerna run watch --scope react-finder",
     "start": "lerna run start --scope react-finder-example"
   },
   "devDependencies": {
