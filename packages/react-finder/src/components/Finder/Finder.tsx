@@ -6,21 +6,14 @@ import FinderHeader from "../FinderHeader/FinderHeader";
 import { default as FinderItemDefault } from "../FinderItem/FinderItem";
 import FinderDetail from "../FinderItemDetail/FinderItemDetail";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { DROP_ON_ITEM_OPTIONS, FinderItem } from "../../types";
+import { DROP_ON_ITEM_OPTIONS, FinderItem, FinderProps } from "../../types";
 import {
     Finder as StyledFinder,
     FinderContent,
     FinderDetailContainer,
     FinderFolderContainer,
 } from "./styles";
-
-interface FinderProps {
-    tree: FinderItem[];
-    setTree: React.Dispatch<React.SetStateAction<FinderItem[]>>;
-    dropOnFile?: DROP_ON_ITEM_OPTIONS;
-    Item?: any;
-    ItemDetail?: any;
-}
+import renderComponent from "../../util/renderComponent";
 
 const Finder = (props: FinderProps) => {
     const {
@@ -61,7 +54,7 @@ const Finder = (props: FinderProps) => {
                         ))}
                     </FinderFolderContainer>
                     <FinderDetailContainer>
-                        {detailItem && <ItemDetail item={ItemDetail} />}
+                        {detailItem && renderComponent(ItemDetail, {item: ItemDetail})}
                     </FinderDetailContainer>
                 </FinderContent>
             </StyledFinder>

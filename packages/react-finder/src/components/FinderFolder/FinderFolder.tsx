@@ -48,18 +48,13 @@ const FinderFolder = (props: FinderFolderProps) => {
                     return (
                         <li key={item.id}>
                             <FinderItemDrag
-                                itemId={item.id}
+                                item={item}
                                 handleDrop={handleDrop}
                                 open={handleItemClick.bind(this, item.id)}
                                 hasChildren={hasChildren(item.id)}
-                            >
-                                <Component
-                                    item={item}
-                                    hasChildren={hasChildren(item.id)}
-                                    open={handleItemClick.bind(this, item.id)}
-                                    active={item.id === folder.activeItem}
-                                />
-                            </FinderItemDrag>
+                                component={Component}
+                                active={item.id === folder.activeItem}
+                            />
                         </li>
                     );
                 })}

@@ -1,23 +1,26 @@
 import React, { useEffect, useRef } from "react";
 import { ConnectableElement, useDrag, useDrop } from "react-dnd";
+import { FinderItem, ItemComponent } from "../../types";
+import renderComponent from "../../util/renderComponent";
 import { ItemDrag } from "./styles";
 
 export interface FinderItemDragProps {
-    itemId: string;
-    children: any;
+    item: FinderItem;
     hasChildren: boolean;
     open(): void
     handleDrop(itemId: string, targetId: string): void;
+    component: ItemComponent
+    active: boolean
 }
 
 const FinderItemDrag = (props: FinderItemDragProps) => {
-    const { itemId, handleDrop, hasChildren, open } = props;
+    const { item, handleDrop, hasChildren, open, component, active } = props;
 
     const refTimer = useRef<NodeJS.Timer | null>(null);
 
     const [{isDragging}, dragRef] = useDrag(() => ({
         type: "Item",
-        item: {id: itemId},
+        item: {id: item.id},
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         })
@@ -26,7 +29,7 @@ const FinderItemDrag = (props: FinderItemDragProps) => {
     const [{isOver}, dropRef] = useDrop(() => ({
         accept: "Item",
         drop: (data: {id: string}, monitor) => {
-            handleDrop(data.id, itemId);
+            handleDrop(data.id, item.id);
         },
         collect: (monitor) => ({
             isOver: monitor.isOver(),
@@ -53,7 +56,12 @@ const FinderItemDrag = (props: FinderItemDragProps) => {
 
     return (
         <ItemDrag isOver={isOver} ref={attachRef}>
-            {props.children}
+            {renderComponent(component, {
+                item,
+                hasChildren,
+                open,
+                active,
+            })}
         </ItemDrag>
     );
 };
