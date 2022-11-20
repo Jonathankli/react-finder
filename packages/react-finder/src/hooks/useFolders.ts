@@ -66,8 +66,9 @@ const useFolder = (args: UseFolderArgs) => {
             activeItem: activeItems.length > 0 ? activeItems[0] : null,
         });
         if (
-            !folder[folder.length - 1].items.length ||
-            detailView === SELECT_TYPE.DETAILS
+            (!folder[folder.length - 1].items.length ||
+            detailView === SELECT_TYPE.DETAILS) &&
+            !tree.find(item => item.id === folder[folder.length - 1].id)?.isFolder
         ) {
             folder.pop();
         }
@@ -76,8 +77,8 @@ const useFolder = (args: UseFolderArgs) => {
 
     const detailItem: FinderItem | null = useMemo(() => {
         const id = activeItems.at(-1);
-        if (id && (!hasChildren(id) || detailView === SELECT_TYPE.DETAILS)) {
-            const item = tree.find((item) => item.id === id);
+        const item = tree.find((item) => item.id === id);
+        if (id && (!(hasChildren(id) || item?.isFolder) || detailView === SELECT_TYPE.DETAILS)) {
             if (!item) return null;
             setTimeout(() => {
                 contentRef.current.scrollTo({
@@ -176,12 +177,12 @@ const useFolder = (args: UseFolderArgs) => {
             if (parentIndex === -1) {
                 throw new Error("Target not found!");
             }
-            const isFolder = hasChildren(targetId);
+            const _hasChildren = hasChildren(targetId);
             const _dropOnFile = prev[parentIndex].dropOnFile
                 ? prev[parentIndex].dropOnFile
                 : dropOnFile;
 
-            if (isFolder || _dropOnFile === DROP_ON_ITEM_OPTIONS.DIRECT_CHILD) {
+            if (_hasChildren || prev[parentIndex].isFolder || _dropOnFile === DROP_ON_ITEM_OPTIONS.DIRECT_CHILD) {
                 const copy = prev.slice();
                 copy[itemIndex].parent = targetId;
                 return copy;

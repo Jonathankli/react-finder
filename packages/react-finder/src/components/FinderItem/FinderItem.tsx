@@ -12,7 +12,7 @@ const FinderItem = (props: FinderItemProps) => {
                 <IconEye onClick={open.bind(this, SELECT_TYPE.DETAILS)} />
             </div>
         ) : null;
-    const icon = hasChildren ? <IconFolder /> : <IconFile />;
+    const icon = hasChildren || item.isFolder ? <IconFolder /> : <IconFile />;
 
     return (
         <Item

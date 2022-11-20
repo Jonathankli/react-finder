@@ -25,6 +25,7 @@ export interface FinderItem {
     id: string;
     parent?: string | null;
     name?: string
+    isFolder?: boolean
     hasChildren?: boolean
     Component?: ItemComponent
     dropOnFile?: DROP_ON_ITEM_OPTIONS | DropOnFileCallback; 

@@ -16,6 +16,7 @@ const initTree: FinderItem[] = [
   {
     id: "item3",
     name: "Item 3",
+    isFolder: true,
     parent: "item1",
   },
   {

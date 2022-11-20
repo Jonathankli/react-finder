@@ -40,7 +40,7 @@ const FinderItemDrag = (props: FinderItemDragProps) => {
         if(refTimer.current || (refTimer.current && !isOver)) {
             clearTimeout(refTimer.current);
         }
-        if(!hasChildren || !isOver) {
+        if(!(hasChildren || item.isFolder) || !isOver) {
             return;
         }
         
