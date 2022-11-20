@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { v4 } from "uuid";
 import {
+    DETERMINE_CHILDREN_MODE,
     DROP_ON_ITEM_OPTIONS,
     FinderFolder,
     FinderItem,
@@ -20,6 +21,7 @@ export interface UseFolderArgs {
     contentRef: React.MutableRefObject<HTMLInputElement>;
     dropOnFile: DROP_ON_ITEM_OPTIONS;
     folderFactory?: FolderFactory;
+    determineChildren?: DETERMINE_CHILDREN_MODE
 }
 
 const useFolder = (args: UseFolderArgs) => {
@@ -29,6 +31,7 @@ const useFolder = (args: UseFolderArgs) => {
         contentRef,
         dropOnFile,
         folderFactory = defaultFolderFactory,
+        determineChildren = DETERMINE_CHILDREN_MODE.YES
     } = args;
 
     const [activeItems, setActiveItems] = useState<string[]>([]);
@@ -38,6 +41,13 @@ const useFolder = (args: UseFolderArgs) => {
 
     const hasChildren = useCallback(
         (id: string): boolean => {
+            if(determineChildren == DETERMINE_CHILDREN_MODE.NO)
+                return !!tree.find(item => item.id === id)?.hasChildren
+            if(determineChildren == DETERMINE_CHILDREN_MODE.ONLY_MISSING) {
+                const hasChildren = tree.find(item => item.id === id)?.hasChildren;
+                if(hasChildren !== undefined)
+                    return hasChildren;
+            }
             return tree.some((item) => item.parent === id);
         },
         [tree]
@@ -82,7 +92,6 @@ const useFolder = (args: UseFolderArgs) => {
         }
         return null;
     }, [tree, activeItems, detailView, contentRef, hasChildren]);
-console.log(tree);
 
     const selectItem = (
         depth: number,
