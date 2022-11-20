@@ -10,10 +10,9 @@ import "./styles.css";
 
 export interface FinderItem {
     id: string;
-    hasDetails?: boolean;
     parent?: string | null;
     name?: string;
-    component?: any;
+    Component?: any;
     data?: any;
 }
 

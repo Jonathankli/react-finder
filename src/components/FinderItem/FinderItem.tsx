@@ -15,7 +15,7 @@ const FinderItem = (props: FinderItemProps) => {
     const { item, hasChildren, open, active = false } = props;
 
     const actions =
-        hasChildren && item.hasDetails ? (
+        hasChildren && item.data?.hasDetails ? (
             <div className="finder-item-actions">
                 <IconEye onClick={open.bind(this, SELECT_TYPE.DETAILS)} />
             </div>

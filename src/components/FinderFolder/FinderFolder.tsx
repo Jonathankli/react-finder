@@ -43,23 +43,26 @@ const FinderFolder = (props: FinderFolderProps) => {
     return (
         <div className="finder-folder" ref={dropRef}>
             <ul>
-                {folder.items.map((item) => (
-                    <li key={item.id}>
-                        <FinderItemDrag
-                            itemId={item.id}
-                            handleDrop={handleDrop}
-                            open={handleItemClick.bind(this, item.id)}
-                            hasChildren={hasChildren(item.id)}
-                        >
-                            <Item
-                                item={item}
-                                hasChildren={hasChildren(item.id)}
+                {folder.items.map((item) => {
+                    const Component = item.Component ? item.Component : Item;
+                    return (
+                        <li key={item.id}>
+                            <FinderItemDrag
+                                itemId={item.id}
+                                handleDrop={handleDrop}
                                 open={handleItemClick.bind(this, item.id)}
-                                active={item.id === folder.activeItem}
-                            />
-                        </FinderItemDrag>
-                    </li>
-                ))}
+                                hasChildren={hasChildren(item.id)}
+                            >
+                                <Component
+                                    item={item}
+                                    hasChildren={hasChildren(item.id)}
+                                    open={handleItemClick.bind(this, item.id)}
+                                    active={item.id === folder.activeItem}
+                                />
+                            </FinderItemDrag>
+                        </li>
+                    );
+                })}
             </ul>
         </div>
     );
