@@ -1,7 +1,7 @@
 import React from "react";
 import { IconFile } from "@tabler/icons";
-import "./styles.css";
 import { FinderItem } from "../../types";
+import { Detail, DetailIcon, DetailTitle } from "./styles";
 
 export interface FinderDetailProps {
     item: FinderItem;
@@ -11,12 +11,12 @@ const FinderDetail = (props: FinderDetailProps) => {
     const { item } = props;
 
     return (
-        <div className={`finderdetail`}>
-            <div className="finderdetail-icon">
+        <Detail>
+            <DetailIcon>
                 <IconFile />
-            </div>
-            <p className="finderdetail-title">{item.name}</p>
-        </div>
+            </DetailIcon>
+            <DetailTitle>{item.name}</DetailTitle>
+        </Detail>
     );
 };
 

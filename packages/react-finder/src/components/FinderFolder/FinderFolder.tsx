@@ -2,7 +2,7 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import { FinderFolder } from "../../types";
 import FinderItemDrag from "../FinderItemDrag/FinderItemDrag";
-import "./styles.css";
+import { Folder, FolderList } from "./styles";
 
 export interface FinderFolderProps {
     depth: number;
@@ -41,8 +41,8 @@ const FinderFolder = (props: FinderFolderProps) => {
     };
 
     return (
-        <div className="finder-folder" ref={dropRef}>
-            <ul>
+        <Folder ref={dropRef}>
+            <FolderList>
                 {folder.items.map((item) => {
                     const Component = item.Component ? item.Component : Item;
                     return (
@@ -63,8 +63,8 @@ const FinderFolder = (props: FinderFolderProps) => {
                         </li>
                     );
                 })}
-            </ul>
-        </div>
+            </FolderList>
+        </Folder>
     );
 };
 

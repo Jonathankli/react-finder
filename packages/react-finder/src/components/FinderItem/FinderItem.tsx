@@ -1,8 +1,8 @@
 import React from "react";
 import { IconEye, IconFile, IconFolder } from "@tabler/icons";
 import { FinderItem as FinderItemType } from "../../types";
-import "./styles.css";
 import { SELECT_TYPE } from "../../hooks/useFolders";
+import { Item, ItemIcon, ItemTitle } from "./styles";
 
 export interface FinderItemProps {
     item: FinderItemType;
@@ -23,14 +23,14 @@ const FinderItem = (props: FinderItemProps) => {
     const icon = hasChildren ? <IconFolder /> : <IconFile />;
 
     return (
-        <div
-            className={`finder-item ${active ? "isActive" : ""}`}
+        <Item
+            active={active}
             onClick={() => (hasChildren ? open() : open(SELECT_TYPE.DETAILS))}
         >
-            <div className="finder-item-icon">{icon}</div>
-            <p className="finder-item-title">{item.name}</p>
+            <ItemIcon>{icon}</ItemIcon>
+            <ItemTitle>{item.name}</ItemTitle>
             {actions}
-        </div>
+        </Item>
     );
 };
 

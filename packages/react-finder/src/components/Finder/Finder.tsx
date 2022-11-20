@@ -6,8 +6,8 @@ import FinderHeader from "../FinderHeader/FinderHeader";
 import { default as FinderItemDefault } from "../FinderItem/FinderItem";
 import FinderDetail from "../FinderItemDetail/FinderItemDetail";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import "./styles.css";
 import { DROP_ON_ITEM_OPTIONS, FinderItem } from "../../types";
+import { Finder as StyledFinder, FinderContent, FinderDetailContainer, FinderFolderContainer } from "./styles";
 
 
 interface FinderProps {
@@ -39,10 +39,10 @@ const Finder = (props: FinderProps) => {
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <div className="finder">
+            <StyledFinder>
                 <FinderHeader />
-                <div className="finder-content" ref={contentRef}>
-                    <div className="finder-folders">
+                <FinderContent ref={contentRef}>
+                    <FinderFolderContainer>
                         {folders.map((folder, depth) => (
                             <FinderFolder
                                 key={folder.id}
@@ -55,12 +55,12 @@ const Finder = (props: FinderProps) => {
                                 Item={Item}
                             />
                         ))}
-                    </div>
-                    <div className="finder-detail">
+                    </FinderFolderContainer>
+                    <FinderDetailContainer>
                         {detailItem && <ItemDetail item={ItemDetail} />}
-                    </div>
-                </div>
-            </div>
+                    </FinderDetailContainer>
+                </FinderContent>
+            </StyledFinder>
         </DndProvider>
     );
 };

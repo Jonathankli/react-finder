@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import "./styles.css";
+import "./styles.ts";
 import { ConnectableElement, useDrag, useDrop } from "react-dnd";
+import { ItemDrag } from "./styles";
 
 export interface FinderItemDragProps {
     itemId: string;
@@ -52,9 +53,9 @@ const FinderItemDrag = (props: FinderItemDragProps) => {
     }
 
     return (
-        <div className={`finder-item-drag ${isOver ? "isOver" : ""}`} ref={attachRef}>
+        <ItemDrag isOver={isOver} ref={attachRef}>
             {props.children}
-        </div>
+        </ItemDrag>
     );
 };
 

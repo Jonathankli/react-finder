@@ -1,6 +1,6 @@
 import React from 'react';
 import { IconX } from '@tabler/icons';
-import './styles.css';
+import { Header, HeaderTitle } from './styles';
 
 interface FinderHeaderProps {
     title?: string 
@@ -13,10 +13,10 @@ const FinderHeader = (props: FinderHeaderProps) => {
     } = props;
 
     return ( 
-        <div className='finder-header'>
-            <p>{title}</p>
+        <Header>
+            <HeaderTitle>{title}</HeaderTitle>
             <IconX />
-        </div>
+        </Header>
     );
 }
  
