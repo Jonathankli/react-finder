@@ -82,6 +82,7 @@ const useFolder = (args: UseFolderArgs) => {
         }
         return null;
     }, [tree, activeItems, detailView, contentRef, hasChildren]);
+console.log(tree);
 
     const selectItem = (
         depth: number,
@@ -197,6 +198,10 @@ const useFolder = (args: UseFolderArgs) => {
 
         if (activeItems.includes(itemId)) {
             const parentDepth = activeItems.indexOf(itemId) - 1;
+            if(parentDepth === -1) {
+                deselectItem(0);
+                return;
+            }
             const parentId = activeItems[parentDepth];
             selectItem(parentDepth, parentId);
         }
