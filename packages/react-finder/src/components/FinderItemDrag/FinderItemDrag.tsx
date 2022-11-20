@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import "./styles.ts";
 import { ConnectableElement, useDrag, useDrop } from "react-dnd";
 import { ItemDrag } from "./styles";
 

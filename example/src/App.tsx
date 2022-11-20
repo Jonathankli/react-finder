@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import Finder from './components/Finder/Finder';
-import { FinderItem } from './types';
+import { Finder, FinderItem } from 'react-finder';
 
 const initTree: FinderItem[] = [
   {

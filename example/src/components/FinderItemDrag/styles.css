@@ -1,6 +1,0 @@
-.finder-item-drag {
-    border: 1px solid rgba(25, 113, 194, 0);
-}
-.finder-item-drag.isOver {
-    border: 1px solid rgba(25, 113, 194);
-}
