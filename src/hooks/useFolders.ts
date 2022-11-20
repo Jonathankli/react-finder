@@ -158,17 +158,18 @@ const useFolder = (
                 throw new Error("Target not found!");
             }
             const isFolder = hasChildren(targetId);
-            
-            if(isFolder || dropOnFile === DROP_ON_ITEM_OPTIONS.DIRECT_CHILD) {
+            const _dropOnFile = prev[parentIndex].dropOnFile ? prev[parentIndex].dropOnFile : dropOnFile;
+
+            if(isFolder || _dropOnFile === DROP_ON_ITEM_OPTIONS.DIRECT_CHILD) {
                 const copy = prev.slice();
                 copy[itemIndex].parent = targetId;
                 return copy;
             }
 
-            if(dropOnFile === DROP_ON_ITEM_OPTIONS.FORBID) {
+            if(_dropOnFile === DROP_ON_ITEM_OPTIONS.FORBID) {
                 return prev;
             }
-            if(dropOnFile === DROP_ON_ITEM_OPTIONS.CREATE_FOLDER) {
+            if(_dropOnFile === DROP_ON_ITEM_OPTIONS.CREATE_FOLDER) {
                 const _parent = folderFactory(prev[itemIndex], prev[parentIndex]);
                 const copy = prev.slice();
                 copy.push(_parent);

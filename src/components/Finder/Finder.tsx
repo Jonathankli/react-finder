@@ -13,6 +13,7 @@ export interface FinderItem {
     parent?: string | null;
     name?: string;
     Component?: any;
+    dropOnFile?: DROP_ON_ITEM_OPTIONS; 
     data?: any;
 }
 
