@@ -1,0 +1,14 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "lerna run build --scope react-finder",
+    "start": "lerna run start --scope react-finder-example"
+  },
+  "devDependencies": {
+    "lerna": "^6.0.1"
+  }
+}
