@@ -41,8 +41,7 @@ const FinderItemDrag = (props: FinderItemDragProps) => {
             return;
         }
         
-        refTimer.current = setTimeout(() => {
-            console.log("OPEN");            
+        refTimer.current = setTimeout(() => {         
             open();
         }, 1000)
     }, [isOver])

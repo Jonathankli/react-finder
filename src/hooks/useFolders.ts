@@ -174,8 +174,6 @@ const useFolder = (
                 copy.push(_parent);
                 copy[itemIndex].parent = _parent.id;
                 copy[parentIndex].parent = _parent.id;
-                console.log(copy);
-                
                 return copy;
             }
 
