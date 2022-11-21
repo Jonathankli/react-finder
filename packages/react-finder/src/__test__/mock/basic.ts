@@ -3,34 +3,29 @@ import { FinderItem } from "../../types";
 
 export const initTree: FinderItem[] = [
     {
-      id: "item1",
-      name: "Item 1",
+      id: "folder",
+      name: "Folder",
       parent: null,
     },
     {
-      id: "item2",
-      name: "Item 2",
+      id: "item",
+      name: "Item",
       parent: null,
     },
     {
-      id: "item3",
-      name: "Item 3",
+      id: "nestedFolder",
+      name: "Nested folder",
       isFolder: true,
-      parent: "item1",
+      parent: "folder",
     },
     {
-      id: "item4",
-      name: "Item 4",
-      parent: "item1",
+      id: "nestedItem",
+      name: "Nested item",
+      parent: "folder",
     },
     {
-      id: "item5",
-      name: "Item 5",
-      parent: "item3",
-    },
-    {
-      id: "item6",
-      name: "Item 6",
-      parent: "item3",
+      id: "doubleNestedItem",
+      name: "Double nested item",
+      parent: "nestedFolder",
     },
   ]
