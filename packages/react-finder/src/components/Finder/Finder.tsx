@@ -4,7 +4,7 @@ import useFolder from "../../hooks/useFolders";
 import FinderFolder from "../FinderFolder/FinderFolder";
 import FinderHeader from "../FinderHeader/FinderHeader";
 import { default as FinderItemDefault } from "../FinderItem/FinderItem";
-import FinderDetail from "../FinderItemDetail/FinderItemDetail";
+import FinderItemDetail from "../FinderItemDetail/FinderItemDetail";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DROP_ON_ITEM_OPTIONS, FinderItem, FinderProps } from "../../types";
 import {
@@ -21,7 +21,7 @@ const Finder = (props: FinderProps) => {
         setTree,
         dropOnFile = DROP_ON_ITEM_OPTIONS.CREATE_FOLDER,
         Item = FinderItemDefault,
-        ItemDetail = FinderDetail,
+        ItemDetail = FinderItemDetail,
     } = props;
 
     const contentRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -54,7 +54,7 @@ const Finder = (props: FinderProps) => {
                         ))}
                     </FinderFolderContainer>
                     <FinderDetailContainer>
-                        {detailItem && renderComponent(ItemDetail, {item: ItemDetail})}
+                        {detailItem && renderComponent(ItemDetail, {item: detailItem})}
                     </FinderDetailContainer>
                 </FinderContent>
             </StyledFinder>
