@@ -49,7 +49,7 @@
     "watch": "concurrently \"yarn watch:esm\" \"yarn watch:cjs\"",
     "watch:esm": "tsc-watch",
     "watch:cjs": "tsc-watch --module commonjs --outDir dist/cjs",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watchAll"
   },
   "eslintConfig": {

@@ -56,12 +56,14 @@ const useFolder = (args: UseFolderArgs) => {
     const folders: FinderFolder[] = useMemo(() => {
         const folder: FinderFolder[] = activeItems.map((item, depth) => ({
             id: item,
+            name: tree.find(i => i.id == item)?.name ?? "Folder",
             items: tree.filter((child) => child.parent === item),
             activeItem:
                 activeItems.length > depth ? activeItems[depth + 1] : null,
         }));
         folder.unshift({
             id: "root",
+            name: "Root Folder",
             items: tree.filter((item) => !item.parent),
             activeItem: activeItems.length > 0 ? activeItems[0] : null,
         });
@@ -157,7 +159,7 @@ const useFolder = (args: UseFolderArgs) => {
             parents.find((parent) => parent.id === itemId) ||
             itemId === targetId
         ) {
-            console.error("Can not net item in it self!");
+            //Can not net item in it self
             return;
         }
 

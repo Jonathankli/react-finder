@@ -41,7 +41,7 @@ const FinderFolder = (props: FinderFolderProps) => {
     };
 
     return (
-        <Folder ref={dropRef}>
+        <Folder ref={dropRef} data-testid={folder.id}>
             <FolderList>
                 {folder.items.map((item) => {
                     const Component = item.Component ? item.Component : Item;

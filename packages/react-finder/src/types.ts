@@ -34,6 +34,7 @@ export interface FinderItem {
 
 export interface FinderFolder {
     id: string;
+    name: string;
     items: FinderItem[];
     activeItem: string | null;
 }
