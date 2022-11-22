@@ -4,19 +4,10 @@ import { FinderItem } from '../types';
 
 function TestComponent({initTree}: {initTree: FinderItem[]}) {
 
-  const [tree, setTree] = useState(initTree);
+  const [tree, setTree] = useState(JSON.parse(JSON.stringify(initTree)));
 
   return (
-    <div className="App" style={{
-      position: "absolute",
-      width: "100%",
-      height: "100%",
-      maxWidth: "900px",
-      maxHeight: "600px",
-      top: "50%",
-      left: "50%",
-      transform: "translate(-50%, -50%)",
-    }}>
+    <div className="App">
       <Finder tree={tree} setTree={setTree}/>
     </div>
   );
