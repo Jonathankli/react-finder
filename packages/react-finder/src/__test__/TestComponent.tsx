@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import Finder from '../components/Finder/Finder';
-import { FinderItem } from '../types';
+import { FinderItem, FinderProps } from '../types';
 
-function TestComponent({initTree}: {initTree: FinderItem[]}) {
+interface TestComponentProps extends  Omit<FinderProps, "tree" | "setTree"> { //Pick<FinderProps, Exclude<"tree" | "setTree", FinderProps>> {
+  initTree: FinderItem[]
+}
+
+function TestComponent({initTree, ...props}: TestComponentProps ) {
 
   const [tree, setTree] = useState(JSON.parse(JSON.stringify(initTree)));
 
   return (
     <div className="App">
-      <Finder tree={tree} setTree={setTree}/>
+      <Finder tree={tree} setTree={setTree} {...props}/>
     </div>
   );
 }

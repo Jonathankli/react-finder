@@ -13,6 +13,11 @@ export const initTree: FinderItem[] = [
       parent: null,
     },
     {
+      id: "item2",
+      name: "Item 2",
+      parent: null,
+    },
+    {
       id: "nestedFolder",
       name: "Nested folder",
       isFolder: true,

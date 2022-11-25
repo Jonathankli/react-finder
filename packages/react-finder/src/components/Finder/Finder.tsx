@@ -19,9 +19,10 @@ const Finder = (props: FinderProps) => {
     const {
         tree,
         setTree,
-        dropOnFile = DROP_ON_ITEM_OPTIONS.CREATE_FOLDER,
+        dropOnFile = DROP_ON_ITEM_OPTIONS.DIRECT_CHILD,
         Item = FinderItemDefault,
         ItemDetail = FinderItemDetail,
+        folderFactory,
     } = props;
 
     const contentRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -32,7 +33,7 @@ const Finder = (props: FinderProps) => {
         deselectItem,
         hasChildren,
         handleDrop,
-    } = useFolder({ tree, setTree, contentRef, dropOnFile });
+    } = useFolder({ tree, setTree, contentRef, dropOnFile, folderFactory });
 
     return (
         <DndProvider backend={HTML5Backend}>

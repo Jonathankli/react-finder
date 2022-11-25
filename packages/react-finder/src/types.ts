@@ -4,6 +4,7 @@ import React from "react";
 export interface FinderProps {
     tree: FinderItem[];
     setTree: React.Dispatch<React.SetStateAction<FinderItem[]>>;
+    folderFactory?: FolderFactory;
     dropOnFile?: DROP_ON_ITEM_OPTIONS;
     determineChildren?: DETERMINE_CHILDREN_MODE;
     Item?: ItemComponent;

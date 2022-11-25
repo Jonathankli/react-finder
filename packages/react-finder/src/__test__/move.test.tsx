@@ -1,9 +1,10 @@
 import React from 'react'
-import {render, fireEvent, waitFor, screen, within} from '@testing-library/react'
+import {render, fireEvent, waitFor, screen, within, findByTestId, findByText} from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
 import TestComponent from './TestComponent'
 import { initTree } from './mock/basic'
+import { DROP_ON_ITEM_OPTIONS, FolderFactory } from '../types'
 
 describe('Move', () => {
     
@@ -82,6 +83,71 @@ describe('Move', () => {
 
         expect(within(folderContainer).queryByText('Folder')).toBeNull();
         await within(rootContainer).findByText('Folder');
+
+    })
+
+    test('add driect child to file', async () => {
+
+        render(<TestComponent initTree={initTree} dropOnFile={DROP_ON_ITEM_OPTIONS.DIRECT_CHILD} />)
+        
+        const item = await screen.findByText('Item');
+        const item2 = await screen.findByText('Item 2');
+    
+        fireEvent.dragStart(item2);
+        fireEvent.dragEnter(item);
+        fireEvent.dragOver(item);
+        fireEvent.drop(item);
+
+        expect(screen.queryByText('Item 2')).toBeNull();
+
+        fireEvent.click(item);
+        const itemFolderContainer = await screen.findByTestId('item');
+        await within(itemFolderContainer).findByText('Item 2');
+
+    })
+
+    test('create folder on drop', async () => {
+
+        const folderFactory: FolderFactory = (item, targetItem) => ({
+            id: "newFolder",
+            name: "New Folder"
+        })
+
+        render(<TestComponent initTree={initTree} dropOnFile={DROP_ON_ITEM_OPTIONS.CREATE_FOLDER} folderFactory={folderFactory} />)
+        
+        const item = await screen.findByText('Item');
+        const item2 = await screen.findByText('Item 2');
+    
+        fireEvent.dragStart(item2);
+        fireEvent.dragEnter(item);
+        fireEvent.dragOver(item);
+        fireEvent.drop(item);
+
+        const newFolder = await screen.findByText("New Folder");
+
+        fireEvent.click(newFolder);
+        const newFolderContainer = await screen.findByTestId('newFolder');
+        await within(newFolderContainer).findByText('Item 2');
+        await within(newFolderContainer).findByText('Item');
+
+    })
+
+    test('restict drop file on file', async () => {
+
+        render(<TestComponent initTree={initTree} dropOnFile={DROP_ON_ITEM_OPTIONS.FORBID} />)
+        
+        const item = await screen.findByText('Item');
+        const item2 = await screen.findByText('Item 2');
+    
+        fireEvent.dragStart(item2);
+        fireEvent.dragEnter(item);
+        fireEvent.dragOver(item);
+        fireEvent.drop(item);
+
+        const rootFolderContainer = await screen.findByTestId('root');
+
+        await within(rootFolderContainer).findByText('Item 2');
+        await within(rootFolderContainer).findByText('Item');
 
     })
 
