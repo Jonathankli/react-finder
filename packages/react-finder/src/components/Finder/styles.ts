@@ -7,6 +7,7 @@ export const Finder = styled.div`
     height: 100%;
     display: flex;
     flex-direction: column;
+    background-color: white;
 `
 
 export const FinderContent = styled.div`
