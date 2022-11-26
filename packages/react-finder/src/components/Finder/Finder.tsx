@@ -25,6 +25,7 @@ const Finder = (props: FinderProps) => {
         Item = FinderItemDefault,
         ItemDetail = FinderItemDetail,
         folderFactory,
+        onClose
     } = props;
 
     const contentRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -40,7 +41,7 @@ const Finder = (props: FinderProps) => {
     return (
         <DndProvider backend={HTML5Backend}>
             <StyledFinder>
-                <FinderHeader title={title}/>
+                <FinderHeader title={title} onClose={onClose}/>
                 <FinderContent ref={contentRef}>
                     <FinderFolderContainer>
                         {folders.map((folder, depth) => (

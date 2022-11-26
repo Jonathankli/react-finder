@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
-import { Finder, FinderItem } from 'react-finder';
-import { DETERMINE_CHILDREN_MODE, FinderItemProps } from 'react-finder/dist/esm/types';
+import { Finder, FinderItem } from '@jkli/react-finder';
 
 const initTree: FinderItem[] = [
   {
