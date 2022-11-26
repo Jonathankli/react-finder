@@ -31,7 +31,7 @@ const useFolder = (args: UseFolderArgs) => {
         contentRef,
         dropOnFile,
         folderFactory = defaultFolderFactory,
-        determineChildren = DETERMINE_CHILDREN_MODE.YES
+        determineChildren
     } = args;
 
     const [activeItems, setActiveItems] = useState<string[]>([]);
@@ -41,8 +41,9 @@ const useFolder = (args: UseFolderArgs) => {
 
     const hasChildren = useCallback(
         (id: string): boolean => {
-            if(determineChildren == DETERMINE_CHILDREN_MODE.NO)
+            if(determineChildren == DETERMINE_CHILDREN_MODE.NO) {
                 return !!tree.find(item => item.id === id)?.hasChildren
+            }
             if(determineChildren == DETERMINE_CHILDREN_MODE.ONLY_MISSING) {
                 const hasChildren = tree.find(item => item.id === id)?.hasChildren;
                 if(hasChildren !== undefined)
@@ -60,7 +61,7 @@ const useFolder = (args: UseFolderArgs) => {
             items: tree.filter((child) => child.parent === item),
             activeItem:
                 activeItems.length > depth ? activeItems[depth + 1] : null,
-        }));
+        }));        
         folder.unshift({
             id: "root",
             name: "Root Folder",

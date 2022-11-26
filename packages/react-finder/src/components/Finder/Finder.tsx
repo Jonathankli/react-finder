@@ -6,7 +6,7 @@ import FinderHeader from "../FinderHeader/FinderHeader";
 import { default as FinderItemDefault } from "../FinderItem/FinderItem";
 import FinderItemDetail from "../FinderItemDetail/FinderItemDetail";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { DROP_ON_ITEM_OPTIONS, FinderItem, FinderProps } from "../../types";
+import { DETERMINE_CHILDREN_MODE, DROP_ON_ITEM_OPTIONS, FinderItem, FinderProps } from "../../types";
 import {
     Finder as StyledFinder,
     FinderContent,
@@ -21,6 +21,7 @@ const Finder = (props: FinderProps) => {
         title,
         setTree,
         dropOnFile = DROP_ON_ITEM_OPTIONS.DIRECT_CHILD,
+        determineChildren = DETERMINE_CHILDREN_MODE.ONLY_MISSING,
         Item = FinderItemDefault,
         ItemDetail = FinderItemDetail,
         folderFactory,
@@ -34,7 +35,7 @@ const Finder = (props: FinderProps) => {
         deselectItem,
         hasChildren,
         handleDrop,
-    } = useFolder({ tree, setTree, contentRef, dropOnFile, folderFactory });
+    } = useFolder({ tree, setTree, contentRef, dropOnFile, folderFactory, determineChildren });
 
     return (
         <DndProvider backend={HTML5Backend}>

@@ -1,13 +1,13 @@
 import React from "react";
 import { useDrop } from "react-dnd";
-import { FinderFolder } from "../../types";
+import { FinderFolder, ItemComponent } from "../../types";
 import FinderItemDrag from "../FinderItemDrag/FinderItemDrag";
 import { Folder, FolderList } from "./styles";
 
 export interface FinderFolderProps {
     depth: number;
     folder: FinderFolder;
-    Item: any;
+    Item: ItemComponent;
     selectItem(id: string): void;
     deselectItem(): void;
     hasChildren(id: string): boolean;

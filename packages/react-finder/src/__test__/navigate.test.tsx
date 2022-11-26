@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
 import TestComponent from './TestComponent'
 import { initTree } from './mock/basic'
+import { DETERMINE_CHILDREN_MODE, FinderItemProps } from '../types'
 
 describe('Navigate', () => {
     
@@ -80,5 +81,32 @@ describe('Navigate', () => {
 
         userEvent.click(item);
         expect((await screen.findAllByText('Item')).length).toBe(1);
+    })
+
+    test('dont determine children', async () => {
+
+        const Item = (props: FinderItemProps) => {
+            return (
+                <>{props.item.name} {props.hasChildren ? "has children" : ""}</>
+            )
+        }
+
+
+        render(<TestComponent initTree={initTree} Item={Item} determineChildren={DETERMINE_CHILDREN_MODE.NO}/>)
+        expect(screen.queryByText('Item has children')).toBeNull();
+
+        const _initTree = [
+            ...initTree,
+            {
+                id: "itemTest",
+                name: "Item Test",
+                parent: null,
+                hasChildren: true,
+            }
+        ]
+
+        render(<TestComponent initTree={_initTree} Item={Item} determineChildren={DETERMINE_CHILDREN_MODE.NO}/>)
+        await screen.findByText('Item Test has children');
+
     })
 })

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Finder from '../components/Finder/Finder';
 import { FinderItem, FinderProps } from '../types';
+import _ from "lodash";
 
 interface TestComponentProps extends  Omit<FinderProps, "tree" | "setTree"> { //Pick<FinderProps, Exclude<"tree" | "setTree", FinderProps>> {
   initTree: FinderItem[]
@@ -8,7 +9,7 @@ interface TestComponentProps extends  Omit<FinderProps, "tree" | "setTree"> { //
 
 function TestComponent({initTree, ...props}: TestComponentProps ) {
 
-  const [tree, setTree] = useState(JSON.parse(JSON.stringify(initTree)));
+  const [tree, setTree] = useState(_.cloneDeep(initTree));
 
   return (
     <div className="App">

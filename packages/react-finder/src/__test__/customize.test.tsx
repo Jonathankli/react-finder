@@ -23,6 +23,30 @@ describe('Customize', () => {
 
     })
     
+    test('specific custom item component', async () => {
+
+        const Item = (props: FinderItemProps) => {
+            return (
+                <>Specific custom</>
+            )
+        }
+
+        const _initTree = [
+            ...initTree,
+            {
+                id: "itemTest",
+                name: "Item Test",
+                parent: null,
+                Component: Item,
+            }
+        ]
+
+        render(<TestComponent initTree={_initTree}/>)
+
+        await screen.findByText('Specific custom');
+
+    })
+    
     test('renders custom detail component', async () => {
 
         const ItemDetail = (props: FinderDetailProps) => {
