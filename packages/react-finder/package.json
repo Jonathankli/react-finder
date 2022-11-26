@@ -1,6 +1,6 @@
 {
   "name": "@jkli/react-finder",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "types": "./dist/esm/index.d.ts",
@@ -71,5 +71,5 @@
       "last 1 safari version"
     ]
   },
-  "gitHead": "1c80029940cbe3634f0f2dd57e07199d7eeed5d8"
+  "gitHead": "90404cc459530c6d7f500c0aa5276f9e494c2e9e"
 }
