@@ -151,4 +151,33 @@ describe('Move', () => {
 
     })
 
+    test('item overwrites on drop rule', async () => {
+
+        const _initTree = [
+            ...initTree,
+            {
+                id: "itemTest",
+                name: "Item Test",
+                dropOnFile: DROP_ON_ITEM_OPTIONS.FORBID,
+                parent: null,
+            }
+        ]
+
+        render(<TestComponent initTree={_initTree} dropOnFile={DROP_ON_ITEM_OPTIONS.DIRECT_CHILD} />)
+        
+        const item = await screen.findByText('Item');
+        const itemTest = await screen.findByText('Item Test');
+    
+        fireEvent.dragStart(item);
+        fireEvent.dragEnter(itemTest);
+        fireEvent.dragOver(itemTest);
+        fireEvent.drop(itemTest);
+
+        const rootFolderContainer = await screen.findByTestId('root');
+
+        await within(rootFolderContainer).findByText('Item Test');
+        await within(rootFolderContainer).findByText('Item');
+
+    })
+
 })

@@ -180,7 +180,7 @@ const useFolder = (args: UseFolderArgs) => {
                 throw new Error("Target not found!");
             }
             const _hasChildren = hasChildren(targetId);
-            const _dropOnFile = prev[parentIndex].dropOnFile
+            const _dropOnFile = prev[parentIndex].dropOnFile !== undefined
                 ? prev[parentIndex].dropOnFile
                 : dropOnFile;
 

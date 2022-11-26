@@ -2,6 +2,7 @@ import React from "react";
 
 
 export interface FinderProps {
+    title?: string;
     tree: FinderItem[];
     setTree: React.Dispatch<React.SetStateAction<FinderItem[]>>;
     folderFactory?: FolderFactory;

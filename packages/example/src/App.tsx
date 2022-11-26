@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import { Finder, FinderItem } from 'react-finder';
+import { FinderItemProps } from 'react-finder/dist/esm/types';
 
 const initTree: FinderItem[] = [
   {
@@ -40,9 +41,16 @@ function App() {
 
   const [tree, setTree] = useState(initTree);
 
+  const Item = (props: FinderItemProps) => {
+            
+    return (
+        <>Custom {props.item.name} {props.active ? "Aktiv" : ""} </>
+    )
+}
+
   return (
     <div className="App">
-      <Finder tree={tree} setTree={setTree}/>
+      <Finder tree={tree} setTree={setTree} Item={Item}/>
     </div>
   );
 }

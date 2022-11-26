@@ -18,6 +18,7 @@ import renderComponent from "../../util/renderComponent";
 const Finder = (props: FinderProps) => {
     const {
         tree,
+        title,
         setTree,
         dropOnFile = DROP_ON_ITEM_OPTIONS.DIRECT_CHILD,
         Item = FinderItemDefault,
@@ -38,7 +39,7 @@ const Finder = (props: FinderProps) => {
     return (
         <DndProvider backend={HTML5Backend}>
             <StyledFinder>
-                <FinderHeader />
+                <FinderHeader title={title}/>
                 <FinderContent ref={contentRef}>
                     <FinderFolderContainer>
                         {folders.map((folder, depth) => (
