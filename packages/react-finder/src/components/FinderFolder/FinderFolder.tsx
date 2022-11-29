@@ -1,6 +1,13 @@
+import { IconEye, IconPencil } from "@tabler/icons";
 import React from "react";
 import { useDrop } from "react-dnd";
-import { FinderFolder, ItemComponent } from "../../types";
+import {
+    FinderFolder,
+    FolderHeaderComponent,
+    ItemComponent,
+} from "../../types";
+import renderComponent from "../../util/renderComponent";
+import FinderFolderHeader from "../FinderFolderHeader/FinderFolderHeader";
 import FinderItemDrag from "../FinderItemDrag/FinderItemDrag";
 import { Folder, FolderList } from "./styles";
 
@@ -8,6 +15,7 @@ export interface FinderFolderProps {
     depth: number;
     folder: FinderFolder;
     Item: ItemComponent;
+    FolderHeader: FolderHeaderComponent;
     selectItem(id: string): void;
     deselectItem(): void;
     hasChildren(id: string): boolean;
@@ -15,8 +23,15 @@ export interface FinderFolderProps {
 }
 
 const FinderFolder = (props: FinderFolderProps) => {
-    const { folder, Item, selectItem, deselectItem, hasChildren, handleDrop } =
-        props;
+    const {
+        folder,
+        Item,
+        FolderHeader,
+        selectItem,
+        deselectItem,
+        hasChildren,
+        handleDrop,
+    } = props;
 
     const [{ isOver }, dropRef] = useDrop(
         () => ({
@@ -42,6 +57,7 @@ const FinderFolder = (props: FinderFolderProps) => {
 
     return (
         <Folder ref={dropRef} data-testid={folder.id}>
+            {renderComponent(FolderHeader, { folder })}
             <FolderList>
                 {folder.items.map((item) => {
                     const Component = item.Component ? item.Component : Item;

@@ -14,6 +14,7 @@ import {
     FinderFolderContainer,
 } from "./styles";
 import renderComponent from "../../util/renderComponent";
+import FinderFolderHeader from "../FinderFolderHeader/FinderFolderHeader";
 
 const Finder = (props: FinderProps) => {
     const {
@@ -24,6 +25,7 @@ const Finder = (props: FinderProps) => {
         determineChildren = DETERMINE_CHILDREN_MODE.ONLY_MISSING,
         Item = FinderItemDefault,
         ItemDetail = FinderItemDetail,
+        FolderHeader = FinderFolderHeader,
         folderFactory,
         onClose
     } = props;
@@ -54,6 +56,7 @@ const Finder = (props: FinderProps) => {
                                 hasChildren={hasChildren}
                                 handleDrop={handleDrop}
                                 Item={Item}
+                                FolderHeader={FolderHeader}
                             />
                         ))}
                     </FinderFolderContainer>

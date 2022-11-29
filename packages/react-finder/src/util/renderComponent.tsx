@@ -1,7 +1,7 @@
-import { DetailComponent, FinderDetailProps, FinderItemProps, ItemComponent } from "../types";
+import { DetailComponent, FolderHeaderComponent, ItemComponent } from "../types";
 
 const renderComponent = (
-    Component: ItemComponent | DetailComponent,
+    Component: ItemComponent | DetailComponent | FolderHeaderComponent,
     props: any
 ): JSX.Element => {
     if (typeof Component === "function") {

@@ -1,4 +1,5 @@
 import React from "react";
+import { Interface } from "readline";
 
 
 export interface FinderProps {
@@ -11,6 +12,7 @@ export interface FinderProps {
     determineChildren?: DETERMINE_CHILDREN_MODE;
     Item?: ItemComponent;
     ItemDetail?: DetailComponent;
+    FolderHeader?: FolderHeaderComponent;
 }
 
 export interface FinderItemProps {
@@ -22,6 +24,10 @@ export interface FinderItemProps {
 
 export interface FinderDetailProps {
     item: FinderItem;
+}
+
+export interface FinderFolderHeaderProps {
+    folder: FinderFolder;
 }
 
 export interface FinderItem {
@@ -42,6 +48,7 @@ export interface FinderFolder {
     activeItem: string | null;
 }
 
+export type FolderHeaderComponent = React.FC | JSX.Element | ((props: FinderFolderHeaderProps) => JSX.Element)
 export type ItemComponent = React.FC | JSX.Element | ((props: FinderItemProps) => JSX.Element)
 export type DetailComponent = React.FC | JSX.Element | ((props: FinderDetailProps) => JSX.Element)
 
