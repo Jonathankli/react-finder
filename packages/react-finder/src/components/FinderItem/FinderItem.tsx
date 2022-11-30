@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { IconEye, IconFile, IconFolder } from "@tabler/icons";
-import { FinderItemProps, FinderItemSettings, SELECT_TYPE } from "../../types";
+import { FinderItem, FinderItemProps, FinderItemSettings, SELECT_TYPE } from "../../types";
 import { Item, ItemAction, ItemActions, ItemIcon, ItemTitle } from "./styles";
 
 const FinderItem = (props: FinderItemProps) => {
@@ -8,14 +8,14 @@ const FinderItem = (props: FinderItemProps) => {
 
     const actions = useItemActions(item.data, defaultItemSettings ?? {}, open);
 
-    const icon = hasChildren || item.isFolder ? <IconFolder /> : <IconFile />;
+    const Icon = useItemIcon(item, defaultItemSettings ?? {}, hasChildren);
 
     return (
         <Item
             active={active}
             onClick={() => (hasChildren ? open() : open(SELECT_TYPE.DETAILS))}
         >
-            <ItemIcon>{icon}</ItemIcon>
+            <ItemIcon><Icon /></ItemIcon>
             <ItemTitle>{item.name}</ItemTitle>
             <ItemActions>
                 {actions.map((action) => (
@@ -30,6 +30,29 @@ const FinderItem = (props: FinderItemProps) => {
         </Item>
     );
 };
+
+export const useItemIcon = (
+    item: FinderItem,
+    defaultItemSettings: FinderItemSettings,
+    hasChildren: boolean
+) =>
+    useMemo(() => {
+    const defaultFolderIcon =  defaultItemSettings?.FolderIcon === undefined
+        ? IconFolder
+        : defaultItemSettings.FolderIcon;
+    const defaultItemIcon =  defaultItemSettings?.ItemIcon === undefined
+        ? IconFile
+        : defaultItemSettings.ItemIcon;
+    const folderIcon =  item.data?.FolderIcon === undefined
+        ? defaultFolderIcon
+        : item.data.FolderIcon;
+    const itemIcon =  item.data?.ItemIcon === undefined
+        ? defaultItemIcon
+        : item.data.ItemIcon;
+    return hasChildren || item.isFolder 
+        ? folderIcon
+        : itemIcon;
+    }, [defaultItemSettings, item, hasChildren]);
 
 export const useItemActions = (
     itemSetting: FinderItemSettings,
