@@ -7,6 +7,9 @@ const initTree: FinderItem[] = [
     id: "item1",
     name: "Item 1",
     parent: null,
+    data: {
+      hasDetails: true
+    }
   },
   {
     id: "item2",

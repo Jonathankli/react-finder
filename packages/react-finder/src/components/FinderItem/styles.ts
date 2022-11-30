@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 interface ItemStyleProps {
-    active: boolean
+    active: boolean,
 }
 
 export const Item = styled.div<ItemStyleProps>`
@@ -30,6 +30,18 @@ export const ItemTitle = styled.p`
     font-size: 14px;
 `
 
-export const ItemActions = styled.div`
+export const ItemActions = styled.ul`
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+`
 
+export const ItemAction = styled.li`
+    * {
+        cursor: pointer;
+        padding: 0 2.5px;
+        width: 16px;
+        height: 16px;
+    }
 `

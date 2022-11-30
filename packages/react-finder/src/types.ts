@@ -1,4 +1,4 @@
-import React from "react";
+import React, { DOMAttributes } from "react";
 import { Interface } from "readline";
 
 
@@ -13,6 +13,8 @@ export interface FinderProps {
     Item?: ItemComponent;
     ItemDetail?: DetailComponent;
     FolderHeader?: FolderHeaderComponent;
+
+    defaultItemSettings?: FinderItemSettings;
 }
 
 export interface FinderItemProps {
@@ -20,6 +22,7 @@ export interface FinderItemProps {
     hasChildren: boolean;
     open(type?: SELECT_TYPE): void;
     active?: boolean;
+    defaultItemSettings?: FinderItemSettings;
 }
 
 export interface FinderDetailProps {
@@ -28,6 +31,7 @@ export interface FinderDetailProps {
 
 export interface FinderFolderHeaderProps {
     folder: FinderFolder;
+    defaultItemSettings?: FinderItemSettings;
 }
 
 export interface FinderItem {
@@ -38,7 +42,29 @@ export interface FinderItem {
     hasChildren?: boolean
     Component?: ItemComponent
     dropOnFile?: DROP_ON_ITEM_OPTIONS | DropOnFileCallback; 
-    data?: any;
+    data?: any | FinderItemSettings;
+}
+
+export interface FinderItemSettings {
+    //Actions
+    actions?: ItemActions[];
+    folderActions?: ItemActions[];
+    mergeDefaultActions?: boolean;
+    useItemActionsInFolder?: boolean;
+    useOpenAction?: boolean;
+    
+    //Icons
+    ItemIcon?: any;
+    FolderIcon?: any;
+
+    //other
+    hasDetails?: boolean;
+}
+
+export interface ItemActions {
+    name: string;
+    Icon: any;
+    onClick(item: FinderItem | undefined, context: "folder" | "item", event: React.MouseEvent<HTMLLIElement, MouseEvent>): void; 
 }
 
 export interface FinderFolder {
@@ -46,6 +72,7 @@ export interface FinderFolder {
     name: string;
     items: FinderItem[];
     activeItem: string | null;
+    item?: FinderItem;
 }
 
 export type FolderHeaderComponent = React.FC | JSX.Element | ((props: FinderFolderHeaderProps) => JSX.Element)

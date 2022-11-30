@@ -3,6 +3,7 @@ import React from "react";
 import { useDrop } from "react-dnd";
 import {
     FinderFolder,
+    FinderItemSettings,
     FolderHeaderComponent,
     ItemComponent,
 } from "../../types";
@@ -20,6 +21,7 @@ export interface FinderFolderProps {
     deselectItem(): void;
     hasChildren(id: string): boolean;
     handleDrop(itemId: string, targetId: string): void;
+    defaultItemSettings: any | FinderItemSettings;
 }
 
 const FinderFolder = (props: FinderFolderProps) => {
@@ -31,6 +33,7 @@ const FinderFolder = (props: FinderFolderProps) => {
         deselectItem,
         hasChildren,
         handleDrop,
+        defaultItemSettings,
     } = props;
 
     const [{ isOver }, dropRef] = useDrop(
@@ -57,7 +60,7 @@ const FinderFolder = (props: FinderFolderProps) => {
 
     return (
         <Folder ref={dropRef} data-testid={folder.id}>
-            {renderComponent(FolderHeader, { folder })}
+            {renderComponent(FolderHeader, { folder, defaultItemSettings })}
             <FolderList>
                 {folder.items.map((item) => {
                     const Component = item.Component ? item.Component : Item;
@@ -70,6 +73,7 @@ const FinderFolder = (props: FinderFolderProps) => {
                                 hasChildren={hasChildren(item.id)}
                                 component={Component}
                                 active={item.id === folder.activeItem}
+                                defaultItemSettings={defaultItemSettings}
                             />
                         </li>
                     );

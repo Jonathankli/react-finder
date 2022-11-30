@@ -5,6 +5,7 @@ import {
     DROP_ON_ITEM_OPTIONS,
     FinderFolder,
     FinderItem,
+    FinderItemSettings,
     FolderFactory,
     SELECT_TYPE,
 } from "../types";
@@ -21,7 +22,7 @@ export interface UseFolderArgs {
     contentRef: React.MutableRefObject<HTMLInputElement>;
     dropOnFile: DROP_ON_ITEM_OPTIONS;
     folderFactory?: FolderFactory;
-    determineChildren?: DETERMINE_CHILDREN_MODE
+    determineChildren?: DETERMINE_CHILDREN_MODE;
 }
 
 const useFolder = (args: UseFolderArgs) => {
@@ -31,7 +32,7 @@ const useFolder = (args: UseFolderArgs) => {
         contentRef,
         dropOnFile,
         folderFactory = defaultFolderFactory,
-        determineChildren
+        determineChildren,
     } = args;
 
     const [activeItems, setActiveItems] = useState<string[]>([]);
@@ -41,13 +42,14 @@ const useFolder = (args: UseFolderArgs) => {
 
     const hasChildren = useCallback(
         (id: string): boolean => {
-            if(determineChildren == DETERMINE_CHILDREN_MODE.NO) {
-                return !!tree.find(item => item.id === id)?.hasChildren
+            if (determineChildren == DETERMINE_CHILDREN_MODE.NO) {
+                return !!tree.find((item) => item.id === id)?.hasChildren;
             }
-            if(determineChildren == DETERMINE_CHILDREN_MODE.ONLY_MISSING) {
-                const hasChildren = tree.find(item => item.id === id)?.hasChildren;
-                if(hasChildren !== undefined)
-                    return hasChildren;
+            if (determineChildren == DETERMINE_CHILDREN_MODE.ONLY_MISSING) {
+                const hasChildren = tree.find(
+                    (item) => item.id === id
+                )?.hasChildren;
+                if (hasChildren !== undefined) return hasChildren;
             }
             return tree.some((item) => item.parent === id);
         },
@@ -55,13 +57,20 @@ const useFolder = (args: UseFolderArgs) => {
     );
 
     const folders: FinderFolder[] = useMemo(() => {
-        const folder: FinderFolder[] = activeItems.map((item, depth) => ({
-            id: item,
-            name: tree.find(i => i.id == item)?.name ?? "Folder",
-            items: tree.filter((child) => child.parent === item),
-            activeItem:
-                activeItems.length > depth ? activeItems[depth + 1] : null,
-        }));        
+        const folder: FinderFolder[] = activeItems.map((key, depth) => {
+            const item = tree.find((i) => i.id == key);
+            if (!item) {
+                throw new Error("Item not found!");
+            }
+            return {
+                id: key,
+                item: item,
+                name: item?.name ?? "Folder",
+                items: tree.filter((child) => child.parent === key),
+                activeItem:
+                    activeItems.length > depth ? activeItems[depth + 1] : null,
+            };
+        });
         folder.unshift({
             id: "root",
             name: "Root Folder",
@@ -70,8 +79,9 @@ const useFolder = (args: UseFolderArgs) => {
         });
         if (
             (!folder[folder.length - 1].items.length ||
-            detailView === SELECT_TYPE.DETAILS) &&
-            !tree.find(item => item.id === folder[folder.length - 1].id)?.isFolder
+                detailView === SELECT_TYPE.DETAILS) &&
+            !tree.find((item) => item.id === folder[folder.length - 1].id)
+                ?.isFolder
         ) {
             folder.pop();
         }
@@ -81,7 +91,11 @@ const useFolder = (args: UseFolderArgs) => {
     const detailItem: FinderItem | null = useMemo(() => {
         const id = activeItems.at(-1);
         const item = tree.find((item) => item.id === id);
-        if (id && (!(hasChildren(id) || item?.isFolder) || detailView === SELECT_TYPE.DETAILS)) {
+        if (
+            id &&
+            (!(hasChildren(id) || item?.isFolder) ||
+                detailView === SELECT_TYPE.DETAILS)
+        ) {
             if (!item) return null;
             setTimeout(() => {
                 contentRef.current.scrollTo({
@@ -181,11 +195,16 @@ const useFolder = (args: UseFolderArgs) => {
                 throw new Error("Target not found!");
             }
             const _hasChildren = hasChildren(targetId);
-            const _dropOnFile = prev[parentIndex].dropOnFile !== undefined
-                ? prev[parentIndex].dropOnFile
-                : dropOnFile;
+            const _dropOnFile =
+                prev[parentIndex].dropOnFile !== undefined
+                    ? prev[parentIndex].dropOnFile
+                    : dropOnFile;
 
-            if (_hasChildren || prev[parentIndex].isFolder || _dropOnFile === DROP_ON_ITEM_OPTIONS.DIRECT_CHILD) {
+            if (
+                _hasChildren ||
+                prev[parentIndex].isFolder ||
+                _dropOnFile === DROP_ON_ITEM_OPTIONS.DIRECT_CHILD
+            ) {
                 const copy = prev.slice();
                 copy[itemIndex].parent = targetId;
                 return copy;
@@ -211,7 +230,7 @@ const useFolder = (args: UseFolderArgs) => {
 
         if (activeItems.includes(itemId)) {
             const parentDepth = activeItems.indexOf(itemId) - 1;
-            if(parentDepth === -1) {
+            if (parentDepth === -1) {
                 deselectItem(0);
                 return;
             }

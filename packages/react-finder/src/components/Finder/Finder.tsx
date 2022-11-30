@@ -27,7 +27,8 @@ const Finder = (props: FinderProps) => {
         ItemDetail = FinderItemDetail,
         FolderHeader = FinderFolderHeader,
         folderFactory,
-        onClose
+        onClose,
+        defaultItemSettings,
     } = props;
 
     const contentRef = useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -56,6 +57,7 @@ const Finder = (props: FinderProps) => {
                                 hasChildren={hasChildren}
                                 handleDrop={handleDrop}
                                 Item={Item}
+                                defaultItemSettings={defaultItemSettings}
                                 FolderHeader={FolderHeader}
                             />
                         ))}
