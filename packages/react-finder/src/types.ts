@@ -20,6 +20,8 @@ export interface FinderProps {
 export interface FinderItemProps {
     item: FinderItem;
     hasChildren: boolean;
+    toggle(type?: SELECT_TYPE): void;
+    close(type?: SELECT_TYPE): void;
     open(type?: SELECT_TYPE): void;
     active?: boolean;
     defaultItemSettings?: FinderItemSettings;
@@ -47,8 +49,8 @@ export interface FinderItem {
 
 export interface FinderItemSettings {
     //Actions
-    actions?: ItemActions[];
-    folderActions?: ItemActions[];
+    actions?: ItemAction[];
+    folderActions?: ItemAction[];
     mergeDefaultActions?: boolean;
     useItemActionsInFolder?: boolean;
     useOpenAction?: boolean;
@@ -61,7 +63,7 @@ export interface FinderItemSettings {
     hasDetails?: boolean;
 }
 
-export interface ItemActions {
+export interface ItemAction {
     name: string;
     Icon: any;
     onClick(item: FinderItem | undefined, context: "folder" | "item", event: React.MouseEvent<HTMLLIElement, MouseEvent>): void; 

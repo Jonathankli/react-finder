@@ -1,17 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { ConnectableElement, useDrag, useDrop } from "react-dnd";
-import { FinderItem, FinderItemSettings, ItemComponent } from "../../types";
+import { FinderItemProps, ItemComponent, SELECT_TYPE } from "../../types";
 import renderComponent from "../../util/renderComponent";
 import { ItemDrag } from "./styles";
 
-export interface FinderItemDragProps {
-    item: FinderItem;
-    hasChildren: boolean;
-    open(): void;
+export interface FinderItemDragProps extends FinderItemProps {
     handleDrop(itemId: string, targetId: string): void;
     component: ItemComponent;
-    active: boolean;
-    defaultItemSettings: any | FinderItemSettings;
 }
 
 const FinderItemDrag = (props: FinderItemDragProps) => {
@@ -21,8 +16,6 @@ const FinderItemDrag = (props: FinderItemDragProps) => {
         hasChildren,
         open,
         component,
-        active,
-        defaultItemSettings,
     } = props;
 
     const refTimer = useRef<NodeJS.Timer | null>(null);
@@ -68,13 +61,12 @@ const FinderItemDrag = (props: FinderItemDragProps) => {
 
     return (
         <ItemDrag isOver={isOver} ref={attachRef}>
-            {renderComponent(component, {
-                item,
-                hasChildren,
-                open,
-                active,
-                defaultItemSettings,
-            })}
+            {renderComponent(component, Object.keys(props)
+                .filter(key => !['handleDrop', 'component'].includes(key))
+                .reduce((newProps, key) => {
+                    newProps[key] = props[key as keyof FinderItemProps];
+                    return newProps;
+                }, {} as any))}
         </ItemDrag>
     );
 };

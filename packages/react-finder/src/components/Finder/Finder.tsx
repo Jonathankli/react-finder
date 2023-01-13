@@ -6,7 +6,7 @@ import FinderHeader from "../FinderHeader/FinderHeader";
 import { default as FinderItemDefault } from "../FinderItem/FinderItem";
 import FinderItemDetail from "../FinderItemDetail/FinderItemDetail";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { DETERMINE_CHILDREN_MODE, DROP_ON_ITEM_OPTIONS, FinderItem, FinderProps } from "../../types";
+import { DETERMINE_CHILDREN_MODE, DROP_ON_ITEM_OPTIONS, FinderItem, FinderProps, SELECT_TYPE } from "../../types";
 import {
     Finder as StyledFinder,
     FinderContent,
@@ -33,6 +33,7 @@ const Finder = (props: FinderProps) => {
 
     const contentRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const {
+        selectType,
         folders,
         detailItem,
         selectItem,
@@ -52,6 +53,7 @@ const Finder = (props: FinderProps) => {
                                 key={folder.id}
                                 depth={depth}
                                 folder={folder}
+                                selectType={selectType}
                                 selectItem={selectItem.bind(this, depth)}
                                 deselectItem={deselectItem.bind(this, depth)}
                                 hasChildren={hasChildren}

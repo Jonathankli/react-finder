@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import {
     FinderFolderHeaderProps,
     FinderItemSettings,
-    ItemActions,
+    ItemAction,
 } from "../../types";
 import { FolderHeader, FolderActions, FolderAction } from "./styles";
 
@@ -59,7 +59,7 @@ export const useFolderActions = (
             }
             actions.push(...(defaultItemSettings?.folderActions ?? []));
         }
-        return actions as ItemActions[];
+        return actions as ItemAction[];
     }, [defaultItemSettings, itemSetting]);
 
 export default FinderFolderHeader;

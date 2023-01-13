@@ -1,4 +1,3 @@
-import { IconEye, IconPencil } from "@tabler/icons";
 import React from "react";
 import { useDrop } from "react-dnd";
 import {
@@ -6,9 +5,9 @@ import {
     FinderItemSettings,
     FolderHeaderComponent,
     ItemComponent,
+    SELECT_TYPE,
 } from "../../types";
 import renderComponent from "../../util/renderComponent";
-import FinderFolderHeader from "../FinderFolderHeader/FinderFolderHeader";
 import FinderItemDrag from "../FinderItemDrag/FinderItemDrag";
 import { Folder, FolderList } from "./styles";
 
@@ -16,9 +15,10 @@ export interface FinderFolderProps {
     depth: number;
     folder: FinderFolder;
     Item: ItemComponent;
+    selectType: SELECT_TYPE;
     FolderHeader: FolderHeaderComponent;
-    selectItem(id: string): void;
-    deselectItem(): void;
+    selectItem(id: string, type?: SELECT_TYPE): void;
+    deselectItem(type?: SELECT_TYPE): void;
     hasChildren(id: string): boolean;
     handleDrop(itemId: string, targetId: string): void;
     defaultItemSettings: any | FinderItemSettings;
@@ -29,6 +29,7 @@ const FinderFolder = (props: FinderFolderProps) => {
         folder,
         Item,
         FolderHeader,
+        selectType: _selectType,
         selectItem,
         deselectItem,
         hasChildren,
@@ -50,12 +51,16 @@ const FinderFolder = (props: FinderFolderProps) => {
         [handleDrop]
     );
 
-    const handleItemClick = (id: string) => {
-        if (folder.activeItem === id) {
-            deselectItem();
+    const toggle = (id: string, selectType: SELECT_TYPE = SELECT_TYPE.CHILDREN) => {
+        if(selectType !== _selectType) {
+            selectItem(id, selectType);
             return;
         }
-        selectItem(id);
+        if (folder.activeItem === id) {
+            deselectItem(SELECT_TYPE.CHILDREN);
+            return;
+        }
+        selectItem(id, selectType);
     };
 
     return (
@@ -69,7 +74,9 @@ const FinderFolder = (props: FinderFolderProps) => {
                             <FinderItemDrag
                                 item={item}
                                 handleDrop={handleDrop}
-                                open={handleItemClick.bind(this, item.id)}
+                                toggle={toggle.bind(this, item.id)}
+                                open={selectItem.bind(this, item.id)}
+                                close={deselectItem}
                                 hasChildren={hasChildren(item.id)}
                                 component={Component}
                                 active={item.id === folder.activeItem}

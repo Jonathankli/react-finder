@@ -36,7 +36,7 @@ const useFolder = (args: UseFolderArgs) => {
     } = args;
 
     const [activeItems, setActiveItems] = useState<string[]>([]);
-    const [detailView, setDetailView] = useState<SELECT_TYPE>(
+    const [selectType, setSelectType] = useState<SELECT_TYPE>(
         SELECT_TYPE.CHILDREN
     );
 
@@ -79,14 +79,15 @@ const useFolder = (args: UseFolderArgs) => {
         });
         if (
             (!folder[folder.length - 1].items.length ||
-                detailView === SELECT_TYPE.DETAILS) &&
+                selectType === SELECT_TYPE.DETAILS) &&
             !tree.find((item) => item.id === folder[folder.length - 1].id)
-                ?.isFolder
+                ?.isFolder &&
+            activeItems.length !== 0
         ) {
             folder.pop();
         }
         return folder;
-    }, [tree, activeItems, detailView]);
+    }, [tree, activeItems, selectType]);
 
     const detailItem: FinderItem | null = useMemo(() => {
         const id = activeItems.at(-1);
@@ -94,7 +95,7 @@ const useFolder = (args: UseFolderArgs) => {
         if (
             id &&
             (!(hasChildren(id) || item?.isFolder) ||
-                detailView === SELECT_TYPE.DETAILS)
+                selectType === SELECT_TYPE.DETAILS)
         ) {
             if (!item) return null;
             setTimeout(() => {
@@ -109,19 +110,19 @@ const useFolder = (args: UseFolderArgs) => {
             return item;
         }
         return null;
-    }, [tree, activeItems, detailView, contentRef, hasChildren]);
+    }, [tree, activeItems, selectType, contentRef, hasChildren]);
 
     const selectItem = (
         depth: number,
         id: string,
         type: SELECT_TYPE = SELECT_TYPE.CHILDREN
-    ) => {
+    ) => {        
         const item = tree.find((item) => item.id === id);
         if (!item) {
             throw new Error("Item with id '" + id + "' not found.");
         }
-        if (detailView !== type) {
-            setDetailView(type);
+        if (selectType !== type) {
+            setSelectType(type);
         }
         setActiveItems((prev) => {
             if (prev.length < depth) {
@@ -138,8 +139,8 @@ const useFolder = (args: UseFolderArgs) => {
         depth: number,
         type: SELECT_TYPE = SELECT_TYPE.CHILDREN
     ) => {
-        if (detailView !== type) {
-            setDetailView(type);
+        if (selectType !== type) {
+            setSelectType(type);
         }
         setActiveItems((prev) => {
             if (prev.length < depth) {
@@ -240,6 +241,7 @@ const useFolder = (args: UseFolderArgs) => {
     };
 
     return {
+        selectType,
         activeItems,
         folders,
         detailItem,
