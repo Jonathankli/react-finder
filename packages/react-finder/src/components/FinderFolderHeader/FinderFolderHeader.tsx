@@ -18,8 +18,9 @@ const FinderFolderHeader = (props: FinderFolderHeaderProps) => {
         <FolderHeader>
             <p>{folder.name}</p>
             <FolderActions>
-                {actions.map((action) => (
+                {actions.map((action, i) => (
                     <FolderAction
+                        key={i}
                         onClick={(e) => action.onClick(folder.item, "folder", e)}
                         title={action.name}
                     >
